@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Add ShoppingListItem</title>
+    </head>
+    <body>
+        <form>
+            <div>
+                <label for="item">Enter Item </label>
+                <input type="text" id="item" autofocus />
+            </div>
+            <button type="submit">Add Item</button>
+        </form>
+    </body>
+    <script>
+        //会使用到一种叫做IPC渲染器的东西，它基本上用于将一个带有有效载荷的
+        //send an event with a payload from this file to our main js, we want to take that item and send it to the main window ,so that we can list it in the main window
+        const { ipcRenderer } = require("electron");
+        const form = document.querySelector("form");
+        form.addEventListener("submit", submitForm);
+        function submitForm(e) {
+            e.preventDefault();
+            const item = document.querySelector("#item").value;
+            //handle reply
+            ipcRenderer.on("item:add-reply", (event, arg) => {
+                console.log("arg->", arg);
+            });
+            //send to main.js
+            ipcRenderer.send("item:add", item);
+        }
+    </script>
+</html>

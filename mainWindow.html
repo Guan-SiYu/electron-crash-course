@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>ShoppingList</title>
+    </head>
+    <body>
+        <h1>ShoppingList</h1>
+        <ul></ul>
+    </body>
+    <script>
+        const { ipcRenderer } = require("electron");
+        const ul = document.querySelector("ul");
+        ipcRenderer.on("item:add", function (e, item) {});
+        ipcRenderer.on("handle-add:item", (event, itemValue) => {
+            const li = document.createElement("li");
+            const itemText = document.createTextNode(itemValue);
+            li.appendChild(itemText);
+            ul.appendChild(li);
+        });
+        ipcRenderer.on("handle-clear", () => {
+            ul.innerHTML = "";
+        });
+        //remove one item when double click
+        ul.addEventListener("dblclick", (e) => e.target.remove());
+    </script>
+</html>
